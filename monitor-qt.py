@@ -48,24 +48,24 @@ parser.add_argument('-l', '--layout', dest='layout',
 
 args = parser.parse_args()
 
-# check the number of network interfaces
-adapters = ifaddr.get_adapters()
-adaptersList = ()
-interfaceIndex = 0
-# if > 1, list all interfaces with their IP and an index, and request the user to select the good interface
-if len(list(adapters)) > 1:
-    for index, adapter in enumerate(adapters):
-        adaptersList = adaptersList + (adapter.name, )
-        for ip in adapter.ips:
-            if ip.is_IPv4:
-                print(str(index) + ") " + adapter.nice_name + "   %s/%s" % (ip.ip, ip.network_prefix))
-    # read the index chosen by the user, if valid persist the interface name in a property
-    interfaceIndex = int(input('Please select the network interface used by Pioneer ProDj Link\n'))
-    network_interface = adaptersList[interfaceIndex]
-else:
-    network_interface = list(adapters)[0].name
-
-print(network_interface)
+# # check the number of network interfaces
+# adapters = ifaddr.get_adapters()
+# adaptersList = ()
+# interfaceIndex = 0
+# # if > 1, list all interfaces with their IP and an index, and request the user to select the good interface
+# if len(list(adapters)) > 1:
+#     for index, adapter in enumerate(adapters):
+#         adaptersList = adaptersList + (adapter.name, )
+#         for ip in adapter.ips:
+#             if ip.is_IPv4:
+#                 print(str(index) + ") " + adapter.nice_name + "   %s/%s" % (ip.ip, ip.network_prefix))
+#     # read the index chosen by the user, if valid persist the interface name in a property
+#     interfaceIndex = int(input('Please select the network interface used by Pioneer ProDj Link\n'))
+#     network_interface = adaptersList[interfaceIndex]
+# else:
+#     network_interface = list(adapters)[0].name
+#
+# print(network_interface)
 
 
 logging.basicConfig(level=args.loglevel, format='%(levelname)-7s %(module)s: %(message)s')
@@ -93,7 +93,7 @@ app.setPalette(pal)
 
 signal.signal(signal.SIGINT, lambda s, f: app.quit())
 
-prodj.set_network_interface(network_interface)
+# prodj.set_network_interface(network_interface)
 prodj.set_client_keepalive_callback(gui.keepalive_callback)
 prodj.set_client_change_callback(gui.client_change_callback)
 prodj.set_media_change_callback(gui.media_callback)

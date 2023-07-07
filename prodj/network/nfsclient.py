@@ -23,7 +23,7 @@ class NfsClient:
     self.rpc_sock = None
     self.xid = 1
     self.download_file_handle = None
-    self.default_download_directory = "./downloads/"
+    self.default_download_directory = os.getcwd() + "/downloads/"
     self.export_by_slot = {
       "sd": "/B/",
       "usb": "/C/"

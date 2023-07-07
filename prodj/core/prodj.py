@@ -39,8 +39,6 @@ class ProDj(Thread):
     def start(self):
         self.keepalive_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.keepalive_sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        # TODO : list all interfaces
-        # self.keepalive_sock.setsockopt(socket.SOL_SOCKET, IN.SO_BINDTODEVICE)
         self.keepalive_sock.bind((self.keepalive_ip, self.keepalive_port))
         logging.info("Listening on {}:{} for keepalive packets".format(self.keepalive_ip, self.keepalive_port))
         self.beat_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -100,7 +98,7 @@ class ProDj(Thread):
                     data, addr = self.beat_sock.recvfrom(128)
                     self.handle_beat_packet(data, addr)
                 elif sock == self.status_sock:
-                    data, addr = self.status_sock.recvfrom(256)
+                    data, addr = self.status_sock.recvfrom(2048)
                     self.handle_status_packet(data, addr)
             self.cl.gc()
         logging.debug("main loop finished")
