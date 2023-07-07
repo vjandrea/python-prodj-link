@@ -1,4 +1,5 @@
 import asyncio
+import sys
 import logging
 import os
 import socket
@@ -13,6 +14,8 @@ from .nfsdownload import NfsDownload, generic_file_download_done_callback
 class NfsClient:
   def __init__(self, prodj):
     self.prodj = prodj
+    if sys.version_info >= (3, 8) and sys.platform.lower().startswith("win"):
+      asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     self.loop = asyncio.new_event_loop()
     self.receiver = RpcReceiver()
 
