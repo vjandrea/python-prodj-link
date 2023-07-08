@@ -26,7 +26,6 @@ class ProDj(Thread):
         self.data = DataProvider(self)
         self.vcdj = Vcdj(self)
         self.nfs = NfsClient(self)
-        self.network_interface = None
         self.keepalive_ip = "0.0.0.0"
         self.keepalive_port = 50000
         self.beat_ip = "0.0.0.0"
@@ -42,14 +41,10 @@ class ProDj(Thread):
         self.keepalive_sock.bind((self.keepalive_ip, self.keepalive_port))
         logging.info("Listening on {}:{} for keepalive packets".format(self.keepalive_ip, self.keepalive_port))
         self.beat_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        # TODO: bind interface to socket
-        # self.beat_sock.setsockopt(socket.SOL_SOCKET, 25, self.network_interface) # TypeError("a bytes-like object is required, not 'str'")
-        # self.beat_sock.setsockopt(socket.SOL_SOCKET, socket.SO_BINDTODEVICE, self.network_interface) # AttributeError("module 'socket' has no attribute 'SO_BINDTODEVICE'")
-
 
         self.beat_sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
         self.beat_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.beat_sock.bind((self.beat_ip, self.beat_port)) # PermissionError(13, 'An attempt was made to access a socket in a way forbidden by its access permissions', None, 10013, None)
+        self.beat_sock.bind((self.beat_ip, self.beat_port))
         logging.info("Listening on {}:{} for beat packets".format(self.beat_ip, self.beat_port))
         self.status_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.status_sock.bind((self.status_ip, self.status_port))
@@ -158,6 +153,3 @@ class ProDj(Thread):
     # arguments of cb: this clientlist object, player_number, changed slot
     def set_media_change_callback(self, cb=None):
         self.cl.media_change_callback = cb
-
-    def set_network_interface(self, network_interface=None):
-        self.network_interface = network_interface
