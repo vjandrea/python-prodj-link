@@ -130,7 +130,7 @@ class DataProvider(Thread):
 
   def _enqueue_request(self, request, store, params, callback):
     player_number = params[0]
-    if player_number == 0 or player_number > 4:
+    if player_number == 0 or player_number > 5:
       logging.warning("invalid %s request parameters", request)
       return
     logging.debug("enqueueing %s request with params %s", request, str(params))

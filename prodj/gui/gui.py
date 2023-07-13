@@ -226,6 +226,7 @@ class PlayerWidget(QFrame):
     self.labels["sync"].setEnabled(sync)
 
   def setPlayerInfo(self, model, ip_addr, fw=""):
+    logging.debug("setPlayerInfo : model = {}".format(model))
     self.labels["info"].setText("{} {} {}".format(model, fw, ip_addr))
 
   def setSpeed(self, bpm, pitch=None):
@@ -377,9 +378,12 @@ class Gui(QWidget):
 
   # return widget of a player or create it if it does not exist yet
   def create_player(self, player_number):
+    logging.debug('create_player : {}'.format(player_number))
     if player_number in self.players:
+      logging.debug('create_player : player {} is in {}'.format(player_number, self.players))
       return self.players[player_number]
-    if player_number not in range(0,5):
+    if player_number not in range(0,6):
+      logging.debug('create_player : player {} is not in range (0,5)'.format(player_number, self.players))
       return None
     if len(self.players) == 1 and 0 in self.players:
       logging.debug("reassigning default player 0 to player %d", player_number)
@@ -411,13 +415,17 @@ class Gui(QWidget):
 
   # has to be called using a signal, otherwise windows are created standalone
   def keepalive_callback(self, player_number):
+    logging.debug("keepalive_callback : player_number = {}".format(player_number))
     self.keepalive_signal.emit(player_number)
 
   def keepalive_slot(self, player_number):
+    logging.debug("keepalive_slot : player_number = {}".format(player_number))
     player = self.create_player(player_number)
     c = self.prodj.cl.getClient(player_number)
     if c is not None and player is not None:
       player.setPlayerInfo(c.model, c.ip_addr)
+    else:
+      logging.debug('keepalive_slot : c is {}, player is {}'.format(c, player))
 
   def client_change_callback(self, player_number):
     self.client_change_signal.emit(player_number)

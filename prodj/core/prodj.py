@@ -65,7 +65,7 @@ class ProDj(Thread):
         self.beat_sock.close()
 
     def vcdj_set_player_number(self, vcdj_player_number=5):
-        logging.info("Player number set to {}".format(vcdj_player_number))
+        logging.info("Virtual Player number set to {}".format(vcdj_player_number))
         self.vcdj.player_number = vcdj_player_number
         # self.data.dbc.own_player_number = vcdj_player_number
 

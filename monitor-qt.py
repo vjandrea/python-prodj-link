@@ -76,7 +76,7 @@ prodj.set_client_keepalive_callback(gui.keepalive_callback)
 prodj.set_client_change_callback(gui.client_change_callback)
 prodj.set_media_change_callback(gui.media_callback)
 prodj.start()
-prodj.vcdj_set_player_number(5)
+prodj.vcdj_set_player_number(6)
 prodj.vcdj_enable()
 
 app.exec()
